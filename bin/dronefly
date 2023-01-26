@@ -5,14 +5,7 @@ from dronefly.core import Commands, Format
 from dronefly.core.models.user import User
 from dronefly.core.commands import Context
 from rich.console import Console
-from rich.theme import Theme
-from rich.style import Style
-# Possible future support for strikethrough. See:
-# - https://github.com/Textualize/rich/pull/2439#issuecomment-1365091396
-our_theme = Theme({
-    "markdown.s": Style(strike=True),
-})
-console = Console(theme=our_theme)
+console = Console()
 
 user = User()
 user.id = 1

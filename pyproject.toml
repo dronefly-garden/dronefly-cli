@@ -1,3 +1,9 @@
+[tool.flake8]
+max-line-length = 100
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+
 [tool.poetry]
 name = "dronefly-cli"
 version = "0.2.0"

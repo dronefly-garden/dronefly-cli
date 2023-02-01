@@ -10,7 +10,7 @@ repos:
   rev: 6.0.0
   hooks:
   - id: flake8
-    args: [--max-line-length=100]
+    entry: pflake8
     additional_dependencies: [pyproject-flake8]
 - repo: https://github.com/psf/black
   rev: 22.12.0

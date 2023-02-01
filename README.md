@@ -47,6 +47,10 @@ endlocal
 popd
 ```
 
+With this configuration, here's a screenshot on the developers Windows workstation showing the introduction means for the configured place (Nova Scotia):
+
+![image](https://user-images.githubusercontent.com/1204376/216164744-b11f307c-70b7-44db-b220-c379f6334abc.png)
+
 # Related packages
 
 ## Dronefly core

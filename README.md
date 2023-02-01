@@ -47,7 +47,7 @@ endlocal
 popd
 ```
 
-With the `INAT_PLACE_ID` set as shown above, the taxon command shows introduction means for the configured place, Nova Scotia. Run it in [Windows Terminal](https://github.com/microsoft/terminal) for the best results, as it supports all of the rich formatting: clickable links, italics, strikethrough, and colour. This is a screenshot produced on the developer's workstation:
+With `INAT_PLACE_ID` set as shown above, the taxon command shows introduction means for the configured place, Nova Scotia. Run it in [Windows Terminal](https://github.com/microsoft/terminal) for the best results, as it supports all of the rich formatting: clickable links, italics, strikethrough, and colour. This is a screenshot produced on the developer's workstation:
 
 ![image](https://user-images.githubusercontent.com/1204376/216164744-b11f307c-70b7-44db-b220-c379f6334abc.png)
 

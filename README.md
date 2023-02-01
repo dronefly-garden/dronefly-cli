@@ -32,7 +32,7 @@ is a species with [98,638](https://www.inaturalist.org/observations?taxon_id=792
 
 # Configuration
 
-There is no config storage yet. You can provide the default user with User.inat_place_id and User.inat_user_id values by setting the corresponding `INAT_PLACE_ID` and `INAT_USER_ID` environment variables.
+There is no config storage yet. You can provide the default user with `User.inat_place_id` and `User.inat_user_id` values by setting the corresponding `INAT_PLACE_ID` and `INAT_USER_ID` environment variables.
 
 For example, on Windows, you could place a command wrapper similar to this somewhere in your path. Just make sure you edit lines 2, 4, and 5 to change the path to your workspace and your own user id and home place id instead of the developer's.
 

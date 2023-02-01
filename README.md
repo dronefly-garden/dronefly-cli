@@ -13,8 +13,7 @@ $ pip install poetry
 $ git clone https://github.com/dronefly-garden/dronefly-cli
 $ cd dronefly-cli
 $ poetry install
-$ poetry shell
-$ bin/dronefly
+$ poetry run python bin/dronefly
 ```
 
 If all went well, you should arrive at a Dronefly `(=)` prompt where you can test
@@ -30,6 +29,23 @@ is a species with [98,638](https://www.inaturalist.org/observations?taxon_id=792
 > Piciformes >  \
 > Picidae > Dryobates  \
 (=) quit
+
+# Configuration
+
+There is no config storage yet. You can provide the default user with User.inat_place_id and User.inat_user_id values by setting the corresponding `INAT_PLACE_ID` and `INAT_USER_ID` environment variables.
+
+For example, on Windows, you could place a command wrapper similar to this somewhere in your path. Just make sure you edit lines 2, 4, and 5 to change the path to your workspace and your own user id and home place id instead of the developer's.
+
+```bat
+@echo off
+pushd C:\Users\syner\work\dronefly-cli
+setlocal
+set INAT_USER_ID=545640
+set INAT_PLACE_ID=6853
+poetry run python bin\dronefly %*
+endlocal
+popd
+```
 
 # Related packages
 

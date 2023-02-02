@@ -28,29 +28,34 @@ def do_command(command_str: str, ctx: Context, *args):
     console.print(command(ctx, *args))
 
 
-if len(sys.argv) == 1:
-    try:
-        while True:
-            _line = console.input("[bold gold1](=)[/bold gold1] ").rstrip()
-            if not _line:
-                continue
-            if _line.lower() in ("q", "quit"):
-                break
-            args = _line.split(" ")
-            command = args[0]
-            args.remove(command)
-            try:
-                do_command(command, ctx, *args)
-            except NameError:
-                console.print(f"No such command: {command}")
-            except ValueError as err:
-                console.print(err)
-    except (KeyboardInterrupt, EOFError):
-        console.print()
-else:
-    command = sys.argv[1]
-    args = sys.argv[2:]
-    try:
-        do_command(command, ctx, *args)
-    except ValueError as err:
-        console.print(err)
+def main():
+    if len(sys.argv) == 1:
+        try:
+            while True:
+                _line = console.input("[bold gold1](=)[/bold gold1] ").rstrip()
+                if not _line:
+                    continue
+                if _line.lower() in ("q", "quit"):
+                    break
+                args = _line.split(" ")
+                command = args[0]
+                args.remove(command)
+                try:
+                    do_command(command, ctx, *args)
+                except NameError:
+                    console.print(f"No such command: {command}")
+                except ValueError as err:
+                    console.print(err)
+        except (KeyboardInterrupt, EOFError):
+            console.print()
+    else:
+        command = sys.argv[1]
+        args = sys.argv[2:]
+        try:
+            do_command(command, ctx, *args)
+        except ValueError as err:
+            console.print(err)
+
+
+if __name__ == "__main__":
+    main()

@@ -19,8 +19,8 @@ $ poetry run python bin/dronefly
 If all went well, you should arrive at a Dronefly `(=)` prompt where you can test
 it with the `taxon` command to look up taxa by name. For example:
 
-(=) taxon picoides pubescens  \
-[Dryobates pubescens (Downy Woodpecker)](https://www.inaturalist.org/taxa/792988-Dryobates-pubescens) (~~Picoides pubescens~~)  \
+**(=)** taxon picoides pubescens  \
+[*Dryobates pubescens* (Downy Woodpecker)](https://www.inaturalist.org/taxa/792988-Dryobates-pubescens) (~~Picoides pubescens~~)  \
 is a species with [98,638](https://www.inaturalist.org/observations?taxon_id=792988) observations in: 
 
 > Animalia >  \
@@ -29,7 +29,7 @@ is a species with [98,638](https://www.inaturalist.org/observations?taxon_id=792
 > Piciformes >  \
 > Picidae > Dryobates
 
-(=) quit
+**(=)** quit
 
 # Configuration
 

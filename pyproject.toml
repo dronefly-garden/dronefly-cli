@@ -24,6 +24,9 @@ pytest-mock = "^3.10.0"
 pylint = "^2.10.2"
 pytest-asyncio = "^0.20.3"
 
+[tool.poetry.scripts]
+dronefly = 'dronefly_cli.main:main'
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

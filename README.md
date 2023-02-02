@@ -27,7 +27,8 @@ is a species with [98,638](https://www.inaturalist.org/observations?taxon_id=792
 > Chordata > Vertebrata >  \
 > Aves >  \
 > Piciformes >  \
-> Picidae > Dryobates  \
+> Picidae > Dryobates
+
 (=) quit
 
 # Configuration

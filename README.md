@@ -13,7 +13,7 @@ $ pip install poetry
 $ git clone https://github.com/dronefly-garden/dronefly-cli
 $ cd dronefly-cli
 $ poetry install
-$ poetry run python bin/dronefly
+$ dronefly
 ```
 
 If all went well, you should arrive at a Dronefly `(=)` prompt where you can test

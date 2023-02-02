@@ -9,10 +9,7 @@ capabilities, built solely with Dronefly core.
 There are no releases of dronefly-cli yet. For now, this will get you started:
 
 ```sh
-$ pip install poetry
-$ git clone https://github.com/dronefly-garden/dronefly-cli
-$ cd dronefly-cli
-$ poetry install
+$ pip install git+https://github.com/dronefly-garden/dronefly-cli
 $ dronefly
 ```
 
@@ -35,20 +32,9 @@ $\tt\textcolor{gold}{(=)}$ quit
 
 There is no config storage yet. You can provide the default user with `User.inat_place_id` and `User.inat_user_id` values by setting the corresponding `INAT_PLACE_ID` and `INAT_USER_ID` environment variables.
 
-For example, on Windows, you could place a command wrapper similar to this somewhere in your path. Just make sure you edit lines 2, 4, and 5 to change the path to your workspace and your own user id and home place id instead of the developer's.
+For example, with `INAT_PLACE_ID=6853`, the taxon command shows introduction means for the configured place, Nova Scotia.
 
-```bat
-@echo off
-pushd C:\Users\syner\work\dronefly-cli
-setlocal
-set INAT_USER_ID=545640
-set INAT_PLACE_ID=6853
-poetry run python bin\dronefly %*
-endlocal
-popd
-```
-
-With `INAT_PLACE_ID` set as shown above, the taxon command shows introduction means for the configured place, Nova Scotia. Run it in [Windows Terminal](https://github.com/microsoft/terminal) for the best results, as it supports all of the rich formatting: clickable links, italics, strikethrough, and colour. This is a screenshot produced on the developer's workstation:
+On Windows, run it in [Windows Terminal](https://github.com/microsoft/terminal) for the best results, as it supports all of the rich formatting: clickable links, italics, strikethrough, and colour. This is a screenshot produced on the developer's workstation:
 
 ![image](https://user-images.githubusercontent.com/1204376/216164744-b11f307c-70b7-44db-b220-c379f6334abc.png)
 

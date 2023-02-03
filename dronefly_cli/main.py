@@ -33,7 +33,7 @@ def main():
     if len(sys.argv) == 1:
         try:
             while True:
-                console.out("[bold gold1](=)[/bold gold1]", end="")
+                console.print("[bold gold1](=)[/bold gold1]", end="")
                 _line = console.input(" ").rstrip()
                 if not _line:
                     continue

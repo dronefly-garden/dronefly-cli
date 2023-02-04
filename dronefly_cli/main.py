@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
-import readline  # noqa: F401
+import readline
 
 from dronefly.core import Commands, Format
 from dronefly.core.models.user import User

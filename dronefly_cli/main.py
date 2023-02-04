@@ -16,12 +16,17 @@ histfile_size = 1000
 
 
 def do_command(command_str: str, ctx: Context, *args):
-    command = getattr(commands, command_str, None)
-    if not callable(command):
-        raise (NameError(command_str))
-    if not args:
-        raise (ValueError("No arguments"))
-    console.print(command(ctx, *args))
+    try:
+        command = getattr(commands, command_str, None)
+        if not callable(command):
+            raise (NameError(command_str))
+        if not args:
+            raise (ValueError("No arguments"))
+        console.print(command(ctx, *args))
+    except NameError:
+        console.print(f"No such command: {command}")
+    except ValueError as err:
+        console.print(err)
 
 
 def get_context():
@@ -44,40 +49,36 @@ def write_history(histfile, histfile_size):
     readline.write_history_file(histfile)
 
 
+def start_command_loop(ctx, histfile, histfile_size):
+    try:
+        read_history(histfile)
+
+        while True:
+            console.print("[bold gold1](=)[/bold gold1]", end="")
+            _line = console.input(" ").rstrip()
+            if not _line:
+                continue
+            if _line.lower() in ("q", "quit"):
+                write_history(histfile, histfile_size)
+                break
+            args = _line.split(" ")
+            command = args[0]
+            args.remove(command)
+            do_command(command, ctx, *args)
+    except (KeyboardInterrupt, EOFError):
+        write_history(histfile, histfile_size)
+        console.print()
+
+
 def main():
     ctx = get_context()
 
     if len(sys.argv) == 1:
-        try:
-            read_history(histfile)
-
-            while True:
-                console.print("[bold gold1](=)[/bold gold1]", end="")
-                _line = console.input(" ").rstrip()
-                if not _line:
-                    continue
-                if _line.lower() in ("q", "quit"):
-                    write_history(histfile, histfile_size)
-                    break
-                args = _line.split(" ")
-                command = args[0]
-                args.remove(command)
-                try:
-                    do_command(command, ctx, *args)
-                except NameError:
-                    console.print(f"No such command: {command}")
-                except ValueError as err:
-                    console.print(err)
-        except (KeyboardInterrupt, EOFError):
-            write_history(histfile, histfile_size)
-            console.print()
+        start_command_loop(ctx, histfile, histfile_size)
     else:
         command = sys.argv[1]
         args = sys.argv[2:]
-        try:
-            do_command(command, ctx, *args)
-        except ValueError as err:
-            console.print(err)
+        do_command(command, ctx, *args)
 
 
 if __name__ == "__main__":

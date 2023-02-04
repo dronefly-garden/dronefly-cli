@@ -34,13 +34,22 @@ def get_context():
     return ctx
 
 
+def read_history(histfile):
+    if os.path.exists(histfile):
+        readline.read_history_file(histfile)
+
+
+def write_history(histfile, histfile_size):
+    readline.set_history_length(histfile_size)
+    readline.write_history_file(histfile)
+
+
 def main():
     ctx = get_context()
 
     if len(sys.argv) == 1:
         try:
-            if os.path.exists(histfile):
-                readline.read_history_file(histfile)
+            read_history(histfile)
 
             while True:
                 console.print("[bold gold1](=)[/bold gold1]", end="")
@@ -48,6 +57,7 @@ def main():
                 if not _line:
                     continue
                 if _line.lower() in ("q", "quit"):
+                    write_history(histfile, histfile_size)
                     break
                 args = _line.split(" ")
                 command = args[0]
@@ -59,8 +69,7 @@ def main():
                 except ValueError as err:
                     console.print(err)
         except (KeyboardInterrupt, EOFError):
-            readline.set_history_length(histfile_size)
-            readline.write_history_file(histfile)
+            write_history(histfile, histfile_size)
             console.print()
     else:
         command = sys.argv[1]

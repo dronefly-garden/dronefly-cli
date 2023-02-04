@@ -8,16 +8,11 @@ from dronefly.core.models.user import User
 from dronefly.core.commands import Context
 from rich.console import Console
 
+
 console = Console()
-
-user = User()
-user.id = 1
-user.inat_user_id = os.environ.get("INAT_USER_ID")
-user.inat_place_id = os.environ.get("INAT_PLACE_ID") or 97394  # North America
-ctx = Context()
-ctx.author = user
-
 commands = Commands(format=Format.rich)
+histfile = os.path.expanduser("~/.dronefly_history")
+histfile_size = 1000
 
 
 def do_command(command_str: str, ctx: Context, *args):
@@ -29,9 +24,24 @@ def do_command(command_str: str, ctx: Context, *args):
     console.print(command(ctx, *args))
 
 
+def get_context():
+    user = User()
+    user.id = 1
+    user.inat_user_id = os.environ.get("INAT_USER_ID")
+    user.inat_place_id = os.environ.get("INAT_PLACE_ID") or 97394  # North America
+    ctx = Context()
+    ctx.author = user
+    return ctx
+
+
 def main():
+    ctx = get_context()
+
     if len(sys.argv) == 1:
         try:
+            if os.path.exists(histfile):
+                readline.read_history_file(histfile)
+
             while True:
                 console.print("[bold gold1](=)[/bold gold1]", end="")
                 _line = console.input(" ").rstrip()
@@ -49,6 +59,8 @@ def main():
                 except ValueError as err:
                     console.print(err)
         except (KeyboardInterrupt, EOFError):
+            readline.set_history_length(histfile_size)
+            readline.write_history_file(histfile)
             console.print()
     else:
         command = sys.argv[1]

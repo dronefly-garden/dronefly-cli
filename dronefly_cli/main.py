@@ -24,7 +24,7 @@ def do_command(command_str: str, ctx: Context, *args):
             raise (ValueError("No arguments"))
         console.print(command(ctx, *args))
     except NameError:
-        console.print(f"No such command: {command}")
+        console.print(f"No such command: {command_str}")
     except ValueError as err:
         console.print(err)
 

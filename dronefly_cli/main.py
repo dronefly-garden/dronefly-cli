@@ -30,12 +30,12 @@ def do_command(command_str: str, ctx: Context, *args):
 
 
 def get_context():
-    user = User()
-    user.id = 1
-    user.inat_user_id = os.environ.get("INAT_USER_ID")
-    user.inat_place_id = os.environ.get("INAT_PLACE_ID") or 97394  # North America
-    ctx = Context()
-    ctx.author = user
+    user = User(
+        id=1,
+        inat_user_id=os.environ.get("INAT_USER_ID"),
+        inat_place_id=os.environ.get("INAT_PLACE_ID") or 97394,  # North America
+    )
+    ctx = Context(author=user)
     return ctx
 
 

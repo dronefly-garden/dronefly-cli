@@ -6,6 +6,7 @@ import readline
 from dronefly.core import Commands, Format
 from dronefly.core.models.user import User
 from dronefly.core.commands import Context
+from dronefly.core.constants import INAT_USER_DEFAULT_PARAMS
 from rich.console import Console
 
 
@@ -30,11 +31,12 @@ def do_command(command_str: str, ctx: Context, *args):
 
 
 def get_context():
-    user = User(
-        id=1,
-        inat_user_id=os.environ.get("INAT_USER_ID"),
-        inat_place_id=os.environ.get("INAT_PLACE_ID") or 97394,  # North America
-    )
+    user_params = {"id": 1}
+    for param in ("inat_user_id", *INAT_USER_DEFAULT_PARAMS):
+        param_env = os.environ.get(param.upper())
+        if param_env:
+            user_params[param] = int(param_env) if param_env.isnumeric() else param_env
+    user = User(**user_params)
     ctx = Context(author=user)
     return ctx
 

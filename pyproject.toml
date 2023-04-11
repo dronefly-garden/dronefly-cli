@@ -15,7 +15,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.8.1,<3.12"
 pyreadline3 = "^3.4.1"
-pyinaturalist = { git = "https://github.com/pyinat/pyinaturalist", rev = "8329e2c1706192f3ea9294a4f046a5782b49d2b6" }
+pyinaturalist = { git = "https://github.com/pyinat/pyinaturalist" }
 dronefly-core = { git = "https://github.com/dronefly-garden/dronefly-core" }
 rich = "^13.2"
 

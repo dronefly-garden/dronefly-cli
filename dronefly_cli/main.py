@@ -21,7 +21,7 @@ def do_command(command_str: str, ctx: Context, *args):
         command = getattr(commands, command_str, None)
         if not callable(command):
             raise (NameError(command_str))
-        if not args:
+        if (command_str not in ["life"]) and not args:
             raise (ValueError("No arguments"))
         console.print(command(ctx, *args))
     except NameError:

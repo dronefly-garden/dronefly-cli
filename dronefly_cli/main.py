@@ -21,9 +21,19 @@ def do_command(command_str: str, ctx: Context, *args):
         command = getattr(commands, command_str, None)
         if not callable(command):
             raise (NameError(command_str))
-        if (command_str not in ["life"]) and not args:
+        # TODO: Use command signatures to provide argument validation and conversion.
+        if (command_str not in ["life", "next", "prev", "page"]) and not args:
             raise (ValueError("No arguments"))
-        console.print(command(ctx, *args))
+        if command_str in ["next", "prev"] and args:
+            raise (ValueError("No argument expected"))
+        if command_str in ["page"] and len(args) > 1:
+            raise (ValueError("Too many arguments"))
+        # Argument conversion, if necessary:
+        if command_str in ["page"] and len(args):
+            response = command(ctx, int(args[0]))
+        else:
+            response = command(ctx, *args)
+        console.print(response)
     except NameError:
         console.print(f"No such command: {command_str}")
     except ValueError as err:

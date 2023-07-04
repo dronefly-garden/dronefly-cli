@@ -69,7 +69,9 @@ def start_command_loop(ctx, histfile, histfile_size):
             console.print("[bold gold1](=)[/bold gold1]", end="")
             _line = console.input(" ").rstrip()
             if not _line:
-                continue
+                if not ctx.page_formatter:
+                    continue
+                _line = "next"
             if _line.lower() in ("q", "quit"):
                 write_history(histfile, histfile_size)
                 break
@@ -86,8 +88,10 @@ def main():
     ctx = get_context()
 
     if len(sys.argv) == 1:
+        ctx.per_page = 20
         start_command_loop(ctx, histfile, histfile_size)
     else:
+        ctx.per_page = 0
         command = sys.argv[1]
         args = sys.argv[2:]
         do_command(command, ctx, *args)

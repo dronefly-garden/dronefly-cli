@@ -33,7 +33,10 @@ def do_command(command_str: str, ctx: Context, *args):
             response = command(ctx, int(args[0]))
         else:
             response = command(ctx, *args)
-        console.print(response)
+        if isinstance(response, list):
+            console.print(*response)
+        else:
+            console.print(response)
     except NameError:
         console.print(f"No such command: {command_str}")
     except ValueError as err:

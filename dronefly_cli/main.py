@@ -5,7 +5,7 @@ import readline
 
 from dronefly.core import Commands, Format
 from dronefly.core.models.user import User
-from dronefly.core.commands import Context
+from dronefly.core.commands import ArgumentError, CommandError, Context
 from dronefly.core.constants import INAT_USER_DEFAULT_PARAMS
 from rich.console import Console
 
@@ -20,16 +20,16 @@ def do_command(command_str: str, ctx: Context, *args):
     try:
         command = getattr(commands, command_str, None)
         if not callable(command):
-            raise (NameError(command_str))
+            raise CommandError(f"No such command: {command_str}")
         # TODO: Use command signatures to provide argument validation and conversion.
         if (command_str not in ["life", "next", "prev", "page"]) and not args:
-            raise (ValueError("No arguments"))
+            raise ArgumentError("No arguments")
         if command_str in ["next", "prev"] and args:
-            raise (ValueError("No argument expected"))
+            raise ArgumentError("No argument expected")
         if command_str in ["page"] and len(args) > 1:
-            raise (ValueError("Too many arguments"))
+            raise ArgumentError("Too many arguments")
         # Argument conversion, if necessary:
-        if command_str in ["page"] and len(args):
+        if command_str in ["page", "sel"] and len(args):
             response = command(ctx, int(args[0]))
         else:
             response = command(ctx, *args)
@@ -37,9 +37,7 @@ def do_command(command_str: str, ctx: Context, *args):
             console.print(*response)
         else:
             console.print(response)
-    except NameError:
-        console.print(f"No such command: {command_str}")
-    except ValueError as err:
+    except (ArgumentError, CommandError) as err:
         console.print(err)
 
 

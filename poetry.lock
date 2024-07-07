@@ -483,8 +483,8 @@ rich = ">=13.4"
 [package.source]
 type = "git"
 url = "https://github.com/dronefly-garden/dronefly-core.git"
-reference = "c2783b122af6bb508c804207d1467db9588aabb2"
-resolved_reference = "c2783b122af6bb508c804207d1467db9588aabb2"
+reference = "e1297d9e69e7c97b832bb44dc38a9336906f0c44"
+resolved_reference = "e1297d9e69e7c97b832bb44dc38a9336906f0c44"
 
 [[package]]
 name = "exceptiongroup"
@@ -1500,4 +1500,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<3.13"
-content-hash = "3017210f81da0a61770b75af83db0174d79655048acbf78c864e8bbb8a588e07"
+content-hash = "6a5d77bb78f7e5a789072e29f3686ce9c90f5eae6365d30b18b0d8159e13666b"

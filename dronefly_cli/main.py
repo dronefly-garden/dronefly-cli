@@ -18,21 +18,29 @@ histfile_size = 1000
 
 def do_command(command_str: str, ctx: Context, *args):
     try:
-        command = getattr(commands, command_str, None)
+        command = None
+        _args = [*args]
+        if len(_args) > 0:
+            subcommand = "_".join([command_str, _args[0]])
+            command = getattr(commands, subcommand, None)
+            if command:
+                _args.pop(0)
+        if not command:
+            command = getattr(commands, command_str, None)
         if not callable(command):
             raise CommandError(f"No such command: {command_str}")
         # TODO: Use command signatures to provide argument validation and conversion.
-        if (command_str not in ["life", "next", "prev", "page"]) and not args:
+        if (command_str not in ["life", "next", "prev", "page"]) and not _args:
             raise ArgumentError("No arguments")
-        if command_str in ["next", "prev"] and args:
+        if command_str in ["next", "prev"] and _args:
             raise ArgumentError("No argument expected")
-        if command_str in ["page"] and len(args) > 1:
+        if command_str in ["page"] and len(_args) > 1:
             raise ArgumentError("Too many arguments")
         # Argument conversion, if necessary:
-        if command_str in ["page", "sel"] and len(args):
-            response = command(ctx, int(args[0]))
+        if command_str in ["page", "sel"] and len(_args):
+            response = command(ctx, int(_args[0]))
         else:
-            response = command(ctx, *args)
+            response = command(ctx, *_args)
         if isinstance(response, list):
             console.print(*response)
         else:

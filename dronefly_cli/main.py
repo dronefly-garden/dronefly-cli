@@ -4,7 +4,7 @@ import sys
 import readline
 
 from dronefly.core import Commands, Format
-from dronefly.core.models.user import User
+from dronefly.core.models import Config, User
 from dronefly.core.commands import ArgumentError, CommandError, Context
 from dronefly.core.constants import INAT_USER_DEFAULT_PARAMS
 from rich.console import Console
@@ -50,11 +50,20 @@ def do_command(command_str: str, ctx: Context, *args):
 
 
 def get_context():
-    user_params = {"id": 1}
+    default_user_id = 1
+    config = Config()
+    user_config = config.user(default_user_id)
+    user_params = {"id": default_user_id}
     for param in ("inat_user_id", *INAT_USER_DEFAULT_PARAMS):
-        param_env = os.environ.get(param.upper())
-        if param_env:
-            user_params[param] = int(param_env) if param_env.isnumeric() else param_env
+        param_value = None
+        if user_config:
+            param_value = user_config.get(param)
+        if not param_value:
+            param_value = os.environ.get(param.upper())
+            if param_value and param_value.isnumeric():
+                param_value = int(param_value)
+        if param_value:
+            user_params[param] = param_value
     user = User(**user_params)
     ctx = Context(author=user)
     return ctx

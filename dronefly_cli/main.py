@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import asyncio
 import os
 import sys
 import readline
@@ -16,7 +17,7 @@ histfile = os.path.expanduser("~/.dronefly_history")
 histfile_size = 1000
 
 
-def do_command(command_str: str, ctx: Context, *args):
+async def do_command(command_str: str, ctx: Context, *args):
     try:
         command = None
         _args = [*args]
@@ -38,9 +39,9 @@ def do_command(command_str: str, ctx: Context, *args):
             raise ArgumentError("Too many arguments")
         # Argument conversion, if necessary:
         if command_str in ["page", "sel"] and len(_args):
-            response = command(ctx, int(_args[0]))
+            response = await command(ctx, int(_args[0]))
         else:
-            response = command(ctx, *_args)
+            response = await command(ctx, *_args)
         if isinstance(response, list):
             console.print(*response)
         else:
@@ -79,7 +80,7 @@ def write_history(histfile, histfile_size):
     readline.write_history_file(histfile)
 
 
-def start_command_loop(ctx, histfile, histfile_size):
+async def start_command_loop(ctx, histfile, histfile_size):
     try:
         read_history(histfile)
 
@@ -96,23 +97,27 @@ def start_command_loop(ctx, histfile, histfile_size):
             args = _line.split(" ")
             command = args[0]
             args.remove(command)
-            do_command(command, ctx, *args)
+            await do_command(command, ctx, *args)
     except (KeyboardInterrupt, EOFError):
         write_history(histfile, histfile_size)
         console.print()
 
 
-def main():
+async def start():
     ctx = get_context()
 
     if len(sys.argv) == 1:
         ctx.per_page = 20
-        start_command_loop(ctx, histfile, histfile_size)
+        await start_command_loop(ctx, histfile, histfile_size)
     else:
         ctx.per_page = 0
         command = sys.argv[1]
         args = sys.argv[2:]
-        do_command(command, ctx, *args)
+        await do_command(command, ctx, *args)
+
+
+def main():
+    asyncio.run(start())
 
 
 if __name__ == "__main__":

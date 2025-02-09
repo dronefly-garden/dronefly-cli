@@ -51,13 +51,13 @@ testing = ["jaraco.test", "pytest (!=8.0.*)", "pytest (>=6,!=8.1.*)", "pytest-ch
 
 [[package]]
 name = "beautifulsoup4"
-version = "4.13.2"
+version = "4.13.3"
 description = "Screen-scraping library"
 optional = false
 python-versions = ">=3.7.0"
 files = [
-    {file = "beautifulsoup4-4.13.2-py3-none-any.whl", hash = "sha256:b0ebbcecbfbed2f28e07fb8d004494dfb3030711874a034551ac52008b87a1d1"},
-    {file = "beautifulsoup4-4.13.2.tar.gz", hash = "sha256:da9184389e6848818cf31c970ba3cbe6f33c2b8fbabd70d5bd4a2bfa0c1c4272"},
+    {file = "beautifulsoup4-4.13.3-py3-none-any.whl", hash = "sha256:99045d7d3f08f91f0d656bc9b7efbae189426cd913d830294a15eefa0ea4df16"},
+    {file = "beautifulsoup4-4.13.3.tar.gz", hash = "sha256:1bd32405dacc920b42b83ba01644747ed77456a65760e285fbc47633ceddaf8b"},
 ]
 
 [package.dependencies]
@@ -408,25 +408,25 @@ test-randomorder = ["pytest-randomly"]
 
 [[package]]
 name = "dateparser"
-version = "1.2.0"
+version = "1.2.1"
 description = "Date parsing library designed to parse dates from HTML pages"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "dateparser-1.2.0-py2.py3-none-any.whl", hash = "sha256:0b21ad96534e562920a0083e97fd45fa959882d4162acc358705144520a35830"},
-    {file = "dateparser-1.2.0.tar.gz", hash = "sha256:7975b43a4222283e0ae15be7b4999d08c9a70e2d378ac87385b1ccf2cffbbb30"},
+    {file = "dateparser-1.2.1-py3-none-any.whl", hash = "sha256:bdcac262a467e6260030040748ad7c10d6bacd4f3b9cdb4cfd2251939174508c"},
+    {file = "dateparser-1.2.1.tar.gz", hash = "sha256:7e4919aeb48481dbfc01ac9683c8e20bfe95bb715a38c1e9f6af889f4f30ccc3"},
 ]
 
 [package.dependencies]
-python-dateutil = "*"
-pytz = "*"
-regex = "<2019.02.19 || >2019.02.19,<2021.8.27 || >2021.8.27"
-tzlocal = "*"
+python-dateutil = ">=2.7.0"
+pytz = ">=2024.2"
+regex = ">=2015.06.24,<2019.02.19 || >2019.02.19,<2021.8.27 || >2021.8.27"
+tzlocal = ">=0.2"
 
 [package.extras]
-calendars = ["convertdate", "hijri-converter"]
-fasttext = ["fasttext"]
-langdetect = ["langdetect"]
+calendars = ["convertdate (>=2.2.1)", "hijridate"]
+fasttext = ["fasttext (>=0.9.1)", "numpy (>=1.19.3,<2)"]
+langdetect = ["langdetect (>=1.0.0)"]
 
 [[package]]
 name = "dill"
@@ -445,13 +445,13 @@ profile = ["gprof2dot (>=2022.7.29)"]
 
 [[package]]
 name = "dronefly-core"
-version = "0.4.0"
+version = "0.4.2"
 description = "Core dronefly components"
 optional = false
 python-versions = "<3.13,>=3.11"
 files = [
-    {file = "dronefly_core-0.4.0-py3-none-any.whl", hash = "sha256:e1382fc3aaae63dce7101dcff631a404cc8e3ebee130e4ff01c0a995647f0611"},
-    {file = "dronefly_core-0.4.0.tar.gz", hash = "sha256:4fd3579ef0dd48522ad02d8ed2cd40ad24cbd5611fbfacffe879ebb793e5c423"},
+    {file = "dronefly_core-0.4.2-py3-none-any.whl", hash = "sha256:a0b8703ebec266c0e086bc73e1e5d92a98018552d58d521852ecf42ca7de1312"},
+    {file = "dronefly_core-0.4.2.tar.gz", hash = "sha256:6a1c169854c9cdf005ee4ed1859f27d8a419f92db6919bb5884a5a53cb40ee96"},
 ]
 
 [package.dependencies]
@@ -1448,4 +1448,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.13"
-content-hash = "3a019bb3e6fc6fb6d467fda641a27420cbc2f3c50b17cdd07a506f881d00d961"
+content-hash = "03728614ed3268893177d3ddd7351173e8883dabed765efd9125bb2460e33b69"

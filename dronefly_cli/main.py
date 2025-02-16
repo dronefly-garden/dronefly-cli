@@ -12,12 +12,11 @@ from rich.console import Console
 
 
 console = Console()
-commands = Commands(format=Format.rich)
 histfile = os.path.expanduser("~/.dronefly_history")
 histfile_size = 1000
 
 
-async def do_command(command_str: str, ctx: Context, *args):
+async def do_command(commands, command_str: str, ctx: Context, *args):
     try:
         command = None
         _args = [*args]
@@ -80,7 +79,7 @@ def write_history(histfile, histfile_size):
     readline.write_history_file(histfile)
 
 
-async def start_command_loop(ctx, histfile, histfile_size):
+async def start_command_loop(commands, ctx, histfile, histfile_size):
     try:
         read_history(histfile)
 
@@ -97,7 +96,7 @@ async def start_command_loop(ctx, histfile, histfile_size):
             args = _line.split(" ")
             command = args[0]
             args.remove(command)
-            await do_command(command, ctx, *args)
+            await do_command(commands, command, ctx, *args)
     except (KeyboardInterrupt, EOFError):
         write_history(histfile, histfile_size)
         console.print()
@@ -106,14 +105,16 @@ async def start_command_loop(ctx, histfile, histfile_size):
 async def start():
     ctx = get_context()
 
+    loop = asyncio.get_running_loop()
+    commands = Commands(loop=loop, format=Format.rich)
     if len(sys.argv) == 1:
         ctx.per_page = 20
-        await start_command_loop(ctx, histfile, histfile_size)
+        await start_command_loop(commands, ctx, histfile, histfile_size)
     else:
         ctx.per_page = 0
         command = sys.argv[1]
         args = sys.argv[2:]
-        await do_command(command, ctx, *args)
+        await do_command(commands, command, ctx, *args)
 
 
 def main():

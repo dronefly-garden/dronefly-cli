@@ -3,6 +3,7 @@ import asyncio
 import os
 import sys
 import readline
+from inspect import getmembers, isroutine
 
 from dronefly.core import Commands, Format
 from dronefly.core.models import Config, User
@@ -16,6 +17,36 @@ histfile = os.path.expanduser("~/.dronefly_history")
 histfile_size = 1000
 
 
+async def help(ctx, *args):
+    """Show help
+    Usage:
+                 help             Show help index
+                 help <command>   Show help for command"""  # noqa: E501
+    if len(args) == 0:
+        commands = [
+            *(
+                member
+                for member in getmembers(Commands, predicate=isroutine)
+                if member[0][0] != "_"
+            ),
+            ("help", help),
+        ]
+        commands.sort(key=lambda x: x[0])
+        longest = max(len(member[0]) for member in commands)
+        response = "\n".join(
+            f"{member[0].ljust(longest)}   {member[1].__doc__.splitlines()[0]}"
+            for member in commands
+        )
+        return response
+    if args[0][0] != "_":
+        command = getattr(Commands, args[0], None)
+        if args[0] == "help":
+            command = help
+        if callable(command):
+            return f"Command:     {args[0]}\nDescription: {command.__doc__}"
+    return f"No help for: {' '.join(args)}"
+
+
 async def do_command(commands, command_str: str, ctx: Context, *args):
     try:
         command = None
@@ -25,12 +56,16 @@ async def do_command(commands, command_str: str, ctx: Context, *args):
             command = getattr(commands, subcommand, None)
             if command:
                 _args.pop(0)
+        if command_str == "help":
+            command = help
         if not command:
             command = getattr(commands, command_str, None)
         if not callable(command):
             raise CommandError(f"No such command: {command_str}")
         # TODO: Use command signatures to provide argument validation and conversion.
-        if (command_str not in ["life", "next", "prev", "page"]) and not _args:
+        if (
+            command_str not in ["life", "next", "prev", "page", "add", "help"]
+        ) and not _args:
             raise ArgumentError("No arguments")
         if command_str in ["next", "prev"] and _args:
             raise ArgumentError("No argument expected")

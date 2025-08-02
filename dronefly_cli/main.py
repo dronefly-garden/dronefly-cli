@@ -63,9 +63,7 @@ async def do_command(commands, command_str: str, ctx: Context, *args):
         if not callable(command):
             raise CommandError(f"No such command: {command_str}")
         # TODO: Use command signatures to provide argument validation and conversion.
-        if (
-            command_str not in ["life", "next", "prev", "page", "add", "help"]
-        ) and not _args:
+        if (command_str not in ["life", "next", "prev", "page", "help"]) and not _args:
             raise ArgumentError("No arguments")
         if command_str in ["next", "prev"] and _args:
             raise ArgumentError("No argument expected")

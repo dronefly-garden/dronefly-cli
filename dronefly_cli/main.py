@@ -10,6 +10,7 @@ from dronefly.core.models import Config, User
 from dronefly.core.commands import ArgumentError, CommandError, Context
 from dronefly.core.constants import INAT_USER_DEFAULT_PARAMS
 from rich.console import Console
+from rich.markdown import Markdown
 
 
 console = Console()
@@ -78,8 +79,11 @@ async def do_command(commands, command_str: str, ctx: Context, *args):
             console.print(*response)
         else:
             console.print(response)
-    except (ArgumentError, CommandError) as err:
-        console.print(err)
+    except (ArgumentError, CommandError, LookupError) as err:
+        if commands.format == Format.rich:
+            console.print(Markdown(str(err)))
+        else:
+            console.print(err)
 
 
 def get_context():

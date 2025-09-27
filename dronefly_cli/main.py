@@ -23,6 +23,13 @@ async def help(ctx, *args):
     Usage:
                  help             Show help index
                  help <command>   Show help for command"""  # noqa: E501
+
+    def format_help_index_command(command, command_width):
+        command_help = f"{command[0].replace('_',' ').ljust(command_width)}"
+        if command[1].__doc__:
+            command_help += "    " + command[1].__doc__.splitlines()[0]
+        return command_help
+
     if len(args) == 0:
         commands = [
             *(
@@ -35,16 +42,17 @@ async def help(ctx, *args):
         commands.sort(key=lambda x: x[0])
         longest = max(len(member[0]) for member in commands)
         response = "\n".join(
-            f"{member[0].ljust(longest)}   {member[1].__doc__.splitlines()[0]}"
-            for member in commands
+            format_help_index_command(command, longest) for command in commands
         )
         return response
-    if args[0][0] != "_":
-        command = getattr(Commands, args[0], None)
-        if args[0] == "help":
+    command_name = "_".join(args)
+    if command_name[0] != "_":
+        if command_name == "help":
             command = help
+        else:
+            command = getattr(Commands, command_name, None)
         if callable(command):
-            return f"Command:     {args[0]}\nDescription: {command.__doc__}"
+            return f"Command:     {command_name.replace('_', ' ')}\nDescription: {command.__doc__}"
     return f"No help for: {' '.join(args)}"
 
 

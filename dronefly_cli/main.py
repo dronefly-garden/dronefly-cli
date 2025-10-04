@@ -6,8 +6,8 @@ import readline
 from inspect import getmembers, isroutine
 
 from dronefly.core import Commands, Format
-from dronefly.core.models import Config, User
-from dronefly.core.commands import ArgumentError, CommandError, Context
+from dronefly.core.models import Context, load_config, User
+from dronefly.core.commands import ArgumentError, CommandError
 from dronefly.core.constants import INAT_USER_DEFAULT_PARAMS
 from rich.console import Console
 from rich.markdown import Markdown
@@ -96,8 +96,8 @@ async def do_command(commands, command_str: str, ctx: Context, *args):
 
 def get_context():
     default_user_id = 1
-    config = Config()
-    user_config = config.user(default_user_id)
+    config = load_config()
+    user_config = config.users.get(default_user_id)
     user_params = {"id": default_user_id}
     for param in ("inat_user_id", *INAT_USER_DEFAULT_PARAMS):
         param_value = None
@@ -110,7 +110,7 @@ def get_context():
         if param_value:
             user_params[param] = param_value
     user = User(**user_params)
-    ctx = Context(author=user)
+    ctx = Context(author=user, config=config)
     return ctx
 
 

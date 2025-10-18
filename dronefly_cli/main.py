@@ -94,10 +94,10 @@ async def do_command(commands, command_str: str, ctx: Context, *args):
             console.print(err)
 
 
-def get_context():
+async def get_context():
     default_user_id = 1
     config = load_config()
-    user_config = config.users.get(default_user_id)
+    user_config = await config.user_id(default_user_id)
     user_params = {"id": default_user_id}
     for param in ("inat_user_id", *INAT_USER_DEFAULT_PARAMS):
         param_value = None
@@ -148,7 +148,7 @@ async def start_command_loop(commands, ctx, histfile, histfile_size):
 
 
 async def start():
-    ctx = get_context()
+    ctx = await get_context()
 
     loop = asyncio.get_running_loop()
     commands = Commands(loop=loop, format=Format.rich)

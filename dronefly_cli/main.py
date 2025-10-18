@@ -97,7 +97,7 @@ async def do_command(commands, command_str: str, ctx: Context, *args):
 async def get_context():
     default_user_id = 1
     config = load_config()
-    user_config = await config.user_id(default_user_id)
+    user_config = await config.user(default_user_id)
     user_params = {"id": default_user_id}
     for param in ("inat_user_id", *INAT_USER_DEFAULT_PARAMS):
         param_value = None

@@ -5,7 +5,7 @@ import sys
 import readline
 from inspect import getmembers, isroutine
 
-from dronefly.core import Commands, Format
+from dronefly.core import CLICommands, Format
 from dronefly.core.models import Context, load_config, User
 from dronefly.core.commands import ArgumentError, CommandError
 from dronefly.core.constants import INAT_USER_DEFAULT_PARAMS
@@ -34,7 +34,7 @@ async def help(ctx, *args):
         commands = [
             *(
                 member
-                for member in getmembers(Commands, predicate=isroutine)
+                for member in getmembers(CLICommands, predicate=isroutine)
                 if member[0][0] != "_"
             ),
             ("help", help),
@@ -50,7 +50,7 @@ async def help(ctx, *args):
         if command_name == "help":
             command = help
         else:
-            command = getattr(Commands, command_name, None)
+            command = getattr(CLICommands, command_name, None)
         if callable(command):
             return f"Command:     {command_name.replace('_', ' ')}\nDescription: {command.__doc__}"
     return f"No help for: {' '.join(args)}"
@@ -151,7 +151,7 @@ async def start():
     ctx = await get_context()
 
     loop = asyncio.get_running_loop()
-    commands = Commands(loop=loop, format=Format.rich)
+    commands = CLICommands(loop=loop, format=Format.rich)
     if len(sys.argv) == 1:
         ctx.per_page = 20
         await start_command_loop(commands, ctx, histfile, histfile_size)

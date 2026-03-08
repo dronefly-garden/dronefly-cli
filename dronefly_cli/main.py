@@ -8,6 +8,7 @@ from inspect import getmembers, isroutine
 from dronefly.core import CLICommands, Format
 from dronefly.core.models import Context, load_config, User
 from dronefly.core.commands import ArgumentError, CommandError
+from dronefly.core.commands.base import Command
 from dronefly.core.constants import INAT_USER_DEFAULT_PARAMS
 from rich.console import Console
 from rich.markdown import Markdown
@@ -31,11 +32,15 @@ async def help(ctx, *args):
         return command_help
 
     if len(args) == 0:
+        _commands = (
+            (name, CLICommands._children[name]) for name in CLICommands._children
+        )
         commands = [
+            *_commands,
             *(
                 member
                 for member in getmembers(CLICommands, predicate=isroutine)
-                if member[0][0] != "_"
+                if member[0][0] != "_" and member[0] not in _commands
             ),
             ("help", help),
         ]
@@ -49,6 +54,8 @@ async def help(ctx, *args):
     if command_name[0] != "_":
         if command_name == "help":
             command = help
+        elif command_name in CLICommands._children:
+            command = CLICommands._children[command_name]
         else:
             command = getattr(CLICommands, command_name, None)
         if callable(command):
@@ -68,8 +75,12 @@ async def do_command(commands, command_str: str, ctx: Context, *args):
         if command_str == "help":
             command = help
         if not command:
+            # new-style commands generated from command decorator
+            # - TODO: handle subcommands
+            command = commands._children.get(command_str, None)
+        if not command:
             command = getattr(commands, command_str, None)
-        if not callable(command):
+        if not (isinstance(command, Command) or callable(command)):
             raise CommandError(f"No such command: {command_str}")
         # TODO: Use command signatures to provide argument validation and conversion.
         if (command_str not in ["life", "next", "prev", "page", "help"]) and not _args:
@@ -82,7 +93,10 @@ async def do_command(commands, command_str: str, ctx: Context, *args):
         if command_str in ["page", "sel"] and len(_args):
             response = await command(ctx, int(_args[0]))
         else:
-            response = await command(ctx, *_args)
+            if isinstance(command, Command):
+                response = (await command.execute(ctx, *_args)).format_message()
+            else:
+                response = await command(ctx, *_args)
         if isinstance(response, list):
             console.print(*response)
         else:

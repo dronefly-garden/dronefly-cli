@@ -94,7 +94,11 @@ async def do_command(commands, command_str: str, ctx: Context, *args):
             response = await command(ctx, int(_args[0]))
         else:
             if isinstance(command, Command):
-                response = (await command.execute(ctx, *_args)).format_message()
+                _response = await command(ctx, *_args)
+                if command.post_format_message:
+                    response = command.post_format_message(_response.format_message())
+                else:
+                    response = _response.format_message()
             else:
                 response = await command(ctx, *_args)
         if isinstance(response, list):

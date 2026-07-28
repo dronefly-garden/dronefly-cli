@@ -1,33 +1,64 @@
+[project]
+name = "dronefly-cli"
+version = "0.3.0"
+description = "Dronefly command-line interface"
+authors = [{ name = "Ben Armstrong", email = "synrg@debian.org" }]
+requires-python = ">=3.11,<3.13"
+readme = "README.md"
+license = "AGPL-3.0-or-later"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "pyreadline3>=3.4.1,<4",
+    "dronefly-core>=0.5.2",
+    "rich>=13.2,<14",
+]
+
+[project.scripts]
+dronefly = "dronefly_cli.main:main"
+
 [tool.flake8]
 max-line-length = 100
+
+[dependency-groups]
+dev = [
+    "black>=24.3.0,<25",
+    "pytest>=7.2.1,<8",
+    "pytest-mock>=3.10.0,<4",
+    "pylint>=2.10.2,<3",
+    "pytest-asyncio>=0.20.3,<0.21",
+    "pre-commit>=4.6.1",
+]
+
+[tool.black]
+target-version = ['py311']
 
 [tool.bandit]
 exclude_dirs = ["tests"]
 
-[tool.poetry]
-name = "dronefly-cli"
-version = "0.3.0.dev0"
-description = "Dronefly command-line interface"
-authors = ["Ben Armstrong <synrg@debian.org>"]
-license = "AGPL-3.0-or-later"
-readme = "README.md"
-
-[tool.poetry.dependencies]
-python = ">=3.11,<3.13"
-pyreadline3 = "^3.4.1"
-dronefly-core = "0.5.0.dev0"
-rich = "^13.2"
-
-[tool.poetry.dev-dependencies]
-black = "^24.3.0"
-pytest = "^7.2.1"
-pytest-mock = "^3.10.0"
-pylint = "^2.10.2"
-pytest-asyncio = "^0.20.3"
-
-[tool.poetry.scripts]
-dronefly = 'dronefly_cli.main:main'
-
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["dronefly_cli"]
+
+[tool.uv.sources]
+# If you are using local editable installs for dronefly-core, ensure those are set here
+# dronefly-core = { path = "../dronefly-core" }
+
+[tool.setuptools]
+packages = ["dronefly_cli"]
+
+[tool.setuptools.package-dir]
+"" = "."
+
+[uv.tool.build-backend]
+module-name = "dronefly_cli"
+module-root = ""

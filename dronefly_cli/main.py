@@ -135,7 +135,10 @@ async def start_command_loop(commands, ctx, histfile, histfile_size):
         with console.capture() as capture:
             console.print("[bold gold1](=)[/bold gold1] ", end="")
         raw_prompt = capture.get()
-        prompt_str = re.sub(r"(\x1b\[[0-9;]*m)", r"\001\1\002", raw_prompt)
+        if getattr(readline, "backend", "readline") == "readline":
+            prompt_str = re.sub(r"(\x1b\[[0-9;]*m)", r"\001\1\002", raw_prompt)
+        else:
+            prompt_str = raw_prompt
 
         while True:
             try:

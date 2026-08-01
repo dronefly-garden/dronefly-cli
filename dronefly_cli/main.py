@@ -12,6 +12,7 @@ from dronefly.core.commands import ArgumentError, CommandError
 from dronefly.core.constants import INAT_USER_DEFAULT_PARAMS
 from rich.console import Console
 from rich.markdown import Markdown
+from rich.text import Text
 
 console = Console()
 histfile = os.path.expanduser("~/.dronefly_history")
@@ -132,13 +133,16 @@ async def start_command_loop(commands, ctx, histfile, histfile_size):
         # start/end invisible sequence markers so that readline won't
         # miscalculate line offsets when making edits to the line.
         # - See: Textualize/rich#2293
-        with console.capture() as capture:
-            console.print("[bold gold1](=)[/bold gold1] ", end="")
-        raw_prompt = capture.get()
-        if getattr(readline, "backend", "readline") == "readline":
-            prompt_str = re.sub(r"(\x1b\[[0-9;]*m)", r"\001\1\002", raw_prompt)
+        use_readline_wrappers = getattr(readline, "backend", "readline") == "readline"
+        prompt_str = "[bold gold1](=)[/bold gold1] "
+        if use_readline_wrappers:
+            with Console(force_terminal=True) as console:
+                with console.capture() as capture:
+                    console.print(prompt_str, end="")
+                raw_prompt = capture.get()
+                prompt_str = re.sub(r"(\x1b\[[0-9;]*m)", r"\001\1\002", raw_prompt)
         else:
-            prompt_str = raw_prompt
+            prompt_str = Text.from_markup(prompt_str)
 
         while True:
             try:

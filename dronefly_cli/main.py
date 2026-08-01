@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import asyncio
 import os
+import re
 import sys
 import readline
 from inspect import getmembers, isroutine
@@ -11,7 +12,6 @@ from dronefly.core.commands import ArgumentError, CommandError
 from dronefly.core.constants import INAT_USER_DEFAULT_PARAMS
 from rich.console import Console
 from rich.markdown import Markdown
-
 
 console = Console()
 histfile = os.path.expanduser("~/.dronefly_history")
@@ -128,9 +128,20 @@ async def start_command_loop(commands, ctx, histfile, histfile_size):
     try:
         read_history(histfile)
 
+        # Capture the rendered prompt string and wrap its escape codes in
+        # start/end invisible sequence markers so that readline won't
+        # miscalculate line offsets when making edits to the line.
+        # - See: Textualize/rich#2293
+        with console.capture() as capture:
+            console.print("[bold gold1](=)[/bold gold1] ", end="")
+        raw_prompt = capture.get()
+        prompt_str = re.sub(r"(\x1b\[[0-9;]*m)", r"\001\1\002", raw_prompt)
+
         while True:
-            console.print("[bold gold1](=)[/bold gold1]", end="")
-            _line = console.input(" ").rstrip()
+            try:
+                _line = input(prompt_str).rstrip()
+            except EOFError:
+                raise EOFError
             if not _line:
                 if not ctx.page_formatter:
                     continue

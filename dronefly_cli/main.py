@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import asyncio
+import io
 import os
 import re
 import sys
@@ -12,11 +13,25 @@ from dronefly.core.commands import ArgumentError, CommandError
 from dronefly.core.constants import INAT_USER_DEFAULT_PARAMS
 from rich.console import Console
 from rich.markdown import Markdown
-from rich.text import Text
 
 console = Console()
 histfile = os.path.expanduser("~/.dronefly_history")
 histfile_size = 1000
+
+
+def get_styled_prompt(markup: str = "[bold gold1](=)[/bold gold1] ") -> str:
+    """Renders Rich markup into a raw ANSI prompt string safely."""
+    use_readline_wrappers = getattr(readline, "backend", "readline") == "readline"
+    buffer = io.StringIO()
+    temp_console = Console(file=buffer, force_terminal=True)
+    temp_console.print(markup, end="")
+    raw_prompt = buffer.getvalue()
+
+    # Apply GNU readline non-printing wrappers (\001 and \002) if needed
+    # - See: Textualize/rich#2293
+    if use_readline_wrappers:
+        return re.sub(r"(\x1b\[[0-9;]*m)", r"\001\1\002", raw_prompt)
+    return raw_prompt
 
 
 async def help(ctx, *args):
@@ -129,20 +144,7 @@ async def start_command_loop(commands, ctx, histfile, histfile_size):
     try:
         read_history(histfile)
 
-        # Capture the rendered prompt string and wrap its escape codes in
-        # start/end invisible sequence markers so that readline won't
-        # miscalculate line offsets when making edits to the line.
-        # - See: Textualize/rich#2293
-        use_readline_wrappers = getattr(readline, "backend", "readline") == "readline"
-        prompt_str = "[bold gold1](=)[/bold gold1] "
-        if use_readline_wrappers:
-            with Console(force_terminal=True) as console:
-                with console.capture() as capture:
-                    console.print(prompt_str, end="")
-                raw_prompt = capture.get()
-                prompt_str = re.sub(r"(\x1b\[[0-9;]*m)", r"\001\1\002", raw_prompt)
-        else:
-            prompt_str = Text.from_markup(prompt_str)
+        prompt_str = get_styled_prompt("[bold gold1](=)[/bold gold1] ")
 
         while True:
             try:

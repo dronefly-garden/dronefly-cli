@@ -14,7 +14,7 @@ classifiers = [
 dependencies = [
     "pyreadline3>=3.4.1,<4",
     "dronefly-core>=0.5.2",
-    "rich>=13.2,<14",
+    "rich>=13.2,<15",
 ]
 
 [project.scripts]
@@ -50,8 +50,7 @@ allow-direct-references = true
 packages = ["dronefly_cli"]
 
 [tool.uv.sources]
-# If you are using local editable installs for dronefly-core, ensure those are set here
-# dronefly-core = { path = "../dronefly-core" }
+dronefly-cli = { workspace = true }
 
 [tool.setuptools]
 packages = ["dronefly_cli"]

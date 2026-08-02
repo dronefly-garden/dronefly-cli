@@ -277,7 +277,7 @@ dev = [
 requires-dist = [
     { name = "dronefly-core", specifier = ">=0.5.2" },
     { name = "pyreadline3", specifier = ">=3.4.1,<4" },
-    { name = "rich", specifier = ">=13.2,<14" },
+    { name = "rich", specifier = ">=13.2,<15" },
 ]
 
 [package.metadata.requires-dev]

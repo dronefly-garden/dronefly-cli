@@ -1,6 +1,6 @@
 [project]
 name = "dronefly-cli"
-version = "0.3.0"
+version = "0.3.1"
 description = "Dronefly command-line interface"
 authors = [{ name = "Ben Armstrong", email = "synrg@debian.org" }]
 requires-python = ">=3.11,<3.13"
@@ -13,7 +13,7 @@ classifiers = [
 ]
 dependencies = [
     "pyreadline3>=3.4.1,<4",
-    "dronefly-core>=0.5.2",
+    "dronefly-core>=0.5.3",
     "rich>=13.2,<15",
 ]
 

@@ -255,7 +255,7 @@ wheels = [
 
 [[package]]
 name = "dronefly-cli"
-version = "0.3.0"
+version = "0.3.1"
 source = { editable = "." }
 dependencies = [
     { name = "dronefly-core" },
@@ -275,7 +275,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "dronefly-core", specifier = ">=0.5.2" },
+    { name = "dronefly-core", specifier = ">=0.5.3" },
     { name = "pyreadline3", specifier = ">=3.4.1,<4" },
     { name = "rich", specifier = ">=13.2,<15" },
 ]
@@ -292,7 +292,7 @@ dev = [
 
 [[package]]
 name = "dronefly-core"
-version = "0.5.2"
+version = "0.5.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dateparser" },
@@ -302,9 +302,9 @@ dependencies = [
     { name = "pyinaturalist" },
     { name = "rich" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/28/dc/7a397f5cd64f0d4a093c1e7f605209b5b8970c9e6bc94fe3adee7c77fe5d/dronefly_core-0.5.2.tar.gz", hash = "sha256:83cf5b0519909645b467c26a68f5d45233a2baa21fa5ce0d5526fe307aeb73a3", size = 52613, upload-time = "2026-07-27T23:31:55.037Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/96/a3/f96d445fcec1c3d7b4c7ef71ed0c8e66d740373b863310d0124d8ff2ea3d/dronefly_core-0.5.3.tar.gz", hash = "sha256:8f872c826651c28ebedb44851a2428d1af50ffac2e2400216439a84a85c09f0f", size = 54405, upload-time = "2026-08-19T15:56:47.799Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6b/ab/81b9c65b0d679511ea0db384e9ef51f78eda03d228175171ba93255a6c1f/dronefly_core-0.5.2-py3-none-any.whl", hash = "sha256:b505285df37231ddbdb54110fb3a1ec5ba2b8fea46aa96a688503da3d41d98d4", size = 67361, upload-time = "2026-07-27T23:31:53.721Z" },
+    { url = "https://files.pythonhosted.org/packages/3a/82/b3763d3e5495be834bb3e5197df1ca8cb28d02cf8f4df01570cb765e238e/dronefly_core-0.5.3-py3-none-any.whl", hash = "sha256:a17b8563fb140759a9a802d12178f96b0674f9292d5ff4a2741c6a6d36a3708e", size = 69270, upload-time = "2026-08-19T15:56:46.585Z" },
 ]
 
 [[package]]
